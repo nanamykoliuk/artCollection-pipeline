@@ -2,12 +2,12 @@ import time
 import requests
 import sqlite3
 
-baseurl = 'https://collectionapi.metmuseum.org/public/collection/v1/' 
+baseurl = 'https://collectionapi.metmuseum.org/public/collection/v1.1/' 
 session = requests.Session()
 
 
 def get_object_ids(query):
-    r = session.get(f'{baseurl}/search', params={'q': query}, timeout = 10)
+    r = session.get(f'{baseurl}search', params={'q': query}, timeout = 10)
     r.raise_for_status()
     return r.json().get('objectIDs') or []
 
@@ -30,7 +30,7 @@ def extract(name, limit):
     raw = []
     for object_id in ids:
         obj = get_object(object_id)
-        if ids is not None:
+        if obj is not None:
             raw.append(obj)
         time.sleep(0.1)
     return raw
